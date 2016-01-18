@@ -29,4 +29,4 @@ if [ -f "${RUNCACHE_DIR}/${fullsum}" ]; then
 fi
 
 "$@" | tee "${RUNCACHE_DIR}/${fullsum}"
-exit $?
+exit ${PIPESTATUS[0]}

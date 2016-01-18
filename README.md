@@ -1,6 +1,8 @@
 # runcache
 :wrench: shell command caching
 
+[ccache](https://github.com/jrosdahl/ccache)-style caching for unix commands.
+
 ## Examples
 
 Caching `date`

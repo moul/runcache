@@ -1,0 +1,32 @@
+#!/bin/bash
+
+RUNCACHE_DIR="${RUNCACHE_DIR:-/tmp/runcache}"
+
+#set -x
+mkdir -p "${RUNCACHE_DIR}"
+program="$(which ${1})"
+argssum="$(echo $@ | md5sum | awk '{print $1}')"
+filesum=""
+statsum=""
+shift
+for arg in $program $@; do
+    # compute files sums
+    if [ -f "${arg}" ]; then
+        filesum="${filesum}:$(md5sum "${arg}" | awk '{print $1}')"
+    fi
+
+    # checking file stat
+    # FIXME: disabled for now, as it changes too often
+    #if [ -e "${arg}" ]; then
+    #    statsum="${statsum}:$(stat "${arg}" | md5sum | awk '{print $1}')"
+    #fi
+done
+fullsum="$(echo "${argssum}:${filesum}:${statsum}" | md5sum | awk '{print $1}')"
+
+if [ -f "${RUNCACHE_DIR}/${fullsum}" ]; then
+    cat "${RUNCACHE_DIR}/${fullsum}"
+    exit 0
+fi
+
+${program} $@ | tee "${RUNCACHE_DIR}/${fullsum}"
+exit $?

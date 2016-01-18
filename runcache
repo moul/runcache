@@ -2,13 +2,13 @@
 
 RUNCACHE_DIR="${RUNCACHE_DIR:-/tmp/runcache}"
 
-#set -x
 mkdir -p "${RUNCACHE_DIR}"
 program="$(which ${1})"
-argssum="$(echo $@ | md5sum | awk '{print $1}')"
+argssum="$(echo "$*" | md5sum | awk '{print $1}')"
 filesum=""
 statsum=""
-shift
+argv="$@"
+#shift
 for arg in $program $@; do
     # compute files sums
     if [ -f "${arg}" ]; then
@@ -28,5 +28,5 @@ if [ -f "${RUNCACHE_DIR}/${fullsum}" ]; then
     exit 0
 fi
 
-${program} $@ | tee "${RUNCACHE_DIR}/${fullsum}"
+"$@" | tee "${RUNCACHE_DIR}/${fullsum}"
 exit $?

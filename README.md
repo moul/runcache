@@ -1,4 +1,7 @@
 # runcache
+
+[![GuardRails badge](https://badges.production.guardrails.io/moul/runcache.svg)](https://www.guardrails.io)
+
 :wrench: shell command caching
 
 [ccache](https://github.com/jrosdahl/ccache)-style caching for unix commands.
